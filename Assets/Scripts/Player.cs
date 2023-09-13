@@ -7,20 +7,28 @@ public class Player : MonoBehaviour
 {
     public bool playerDir;
 
+
+    Animator ani;
     SpriteRenderer sprite;
     private void Awake()
     {
         playerDir = false;
         sprite = GetComponent<SpriteRenderer>();
-    }
+		ani = GetComponent<Animator>();
 
+	}
+
+    // 오르기
     public void Up()
     {
-        transform.position += Vector3.up * 0.25f;
+        ani.SetTrigger("Move");
+		transform.position += Vector3.up * 0.25f;
         transform.position += (playerDir == true ? Vector3.right * 0.5f : Vector3.left * 0.5f);
-    }
 
-    public void Turn()
+	}
+
+	// 방향 전환
+	public void Turn()
     {
         playerDir = !playerDir;
         sprite.flipX = playerDir;
