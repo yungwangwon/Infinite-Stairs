@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     }
 
     // Á×À½
-    void Dead()
+    public void Dead()
     {
         GameManager.instance.isLive = false;
         ani.SetTrigger("Die");

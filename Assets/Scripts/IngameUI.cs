@@ -15,13 +15,15 @@ public class IngameUI : MonoBehaviour
 
     public InfoType type;
 
-    Text myText;
-    Slider mySlider;
+	[SerializeField]
+	Text myText;
+	[SerializeField]
+	Slider mySlider;
 
     private void Awake()
     {
-        myText = GetComponent<Text>();
-        mySlider = GetComponent<Slider>();
+        myText = GetComponentInChildren<Text>();
+        mySlider = GetComponentInChildren<Slider>();
     }
 
 

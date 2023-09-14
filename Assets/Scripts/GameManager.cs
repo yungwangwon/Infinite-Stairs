@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public Player player;
+
     public bool isLive;
 
     [Header("# InGameVal")]
@@ -18,7 +20,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
         isLive = true;
     }
 
@@ -32,12 +33,16 @@ public class GameManager : MonoBehaviour
         if(!GameManager.instance.isLive)
             return;
 
+        // score에 따른 hp감소
         hp -= score * Time.deltaTime;
+        if (hp <= 0)
+            player.Dead();
 
-    }
 
-    // 초기화
-    private void Init()
+	}
+
+	// 초기화
+	private void Init()
     {
         maxHp = 100;
         hp = maxHp;
