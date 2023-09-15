@@ -19,7 +19,7 @@ public class PoolManager : MonoBehaviour
 
 		}
 		// ..Test Code
-		Debug.Log(pools.Length);
+		//Debug.Log(pools.Length);
 	}
 
 	public GameObject Get(int index)

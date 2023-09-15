@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public PoolManager poolManager;
     public Player player;
+    public Stair stair;
 
     public bool isLive;
 
@@ -34,7 +36,7 @@ public class GameManager : MonoBehaviour
             return;
 
         // score에 따른 hp감소
-        hp -= score * Time.deltaTime;
+        hp -= score * 0.1f * Time.deltaTime;
         if (hp <= 0)
             player.Dead();
 

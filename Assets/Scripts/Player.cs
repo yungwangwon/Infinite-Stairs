@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using TreeEditor;
 using UnityEngine;
+using UnityEngineInternal;
 
 public class Player : MonoBehaviour
 {
@@ -24,11 +25,15 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive)
             return;
 
-        hit = Physics2D.Raycast(transform.position, Vector2.down * 1.0f, 3.0f);
-        Debug.DrawRay(transform.position, Vector2.down * 1.0f , Color.red);
+        int layerMask = 1 << LayerMask.NameToLayer("Stair");
+
+		hit = Physics2D.Raycast(transform.position + new Vector3(0, -0.5f, 0), Vector2.down, 0.2f, layerMask);
+		Debug.DrawRay(transform.position + new Vector3(0,-0.5f,0), Vector2.down * 0.2f , Color.red);
 
         if (!hit)
-            Dead();
+        {
+			StartCoroutine( Dead() );
+		}
     }
 
     // 오르기
@@ -44,9 +49,8 @@ public class Player : MonoBehaviour
         // 점수 증가
         GameManager.instance.score++;
 
-        if(GameManager.instance.hp < GameManager.instance.maxHp)
-            GameManager.instance.hp += 5;
-
+        if(GameManager.instance.hp < GameManager.instance.maxHp - 5)
+			GameManager.instance.hp += 5;
 	}
 
 	// 방향 전환
@@ -61,9 +65,17 @@ public class Player : MonoBehaviour
     }
 
     // 죽음
-    public void Dead()
+    public IEnumerator Dead()
     {
         GameManager.instance.isLive = false;
-        ani.SetTrigger("Die");
-    }
+		yield return 1;
+		ani.SetTrigger("Die");
+	}
+
+    //public void Dead()
+    //{
+    //    GameManager.instance.isLive = false;
+    //    ani.SetTrigger("Die");
+    //}
+
 }
