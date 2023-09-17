@@ -6,29 +6,36 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public UIManager uiManager;
     public PoolManager poolManager;
     public Player player;
     public Stair stair;
+    public BackGround backGround;
 
     public bool isLive;
 
-    [Header("# InGameVal")]
+
+	[Header("# InGameVal")]
     public float hp;
     public float maxHp;
     public int score;
     public int maxScore;
     public int money;
 
+    public int bestScore;
+
     private void Awake()
     {
         instance = this;
         isLive = true;
-    }
+        bestScore = 0;
+		money = 0;
+	}
 
-    private void Start()
+	private void Start()
     {
-        Init();
-    }
+		Init();
+	}
 
     public void Update()
     {
@@ -39,15 +46,18 @@ public class GameManager : MonoBehaviour
         hp -= score * 0.1f * Time.deltaTime;
         if (hp <= 0)
             player.Dead();
-
-
 	}
 
 	// ÃÊ±âÈ­
-	private void Init()
+	public void Init()
     {
         maxHp = 100;
         hp = maxHp;
         score = 0;
-    }
+        player.Init();
+        backGround.Init();
+        uiManager.SetMainText();
+		//stair.Init();
+
+	}
 }
