@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GameManager : MonoBehaviour
     public Player player;
     public Stair stair;
     public BackGround backGround;
+    public ResourcesManager resourcesManager;
+    public AchiveManager achiveManager;
+    public Pet pet;
 
     public bool isLive;
 
@@ -23,6 +27,8 @@ public class GameManager : MonoBehaviour
     public int money;
 
     public int bestScore;
+    public int[] achive;
+
 
     private void Awake()
     {
@@ -51,12 +57,17 @@ public class GameManager : MonoBehaviour
 	// √ ±‚»≠
 	public void Init()
     {
-        maxHp = 100;
+
+		maxHp = 100;
         hp = maxHp;
         score = 0;
         player.Init();
-        backGround.Init();
-        uiManager.SetMainText();
+        pet.Init();
+
+		backGround.Init();
+		
+
+		uiManager.SetMainText();
 		//stair.Init();
 
 	}

@@ -23,12 +23,15 @@ public class Item : MonoBehaviour
             {
                 case ItemType.Hp:
                     GameManager.instance.hp = GameManager.instance.maxHp;
+                    AudioManager.instance.SfxPlay(AudioManager.Sfx.Hp);
                     break;
 				case ItemType.Coin_S:
                     Coin(1);
+					AudioManager.instance.SfxPlay(AudioManager.Sfx.Coin);
 					break;
 				case ItemType.Coin_B:
-                    Coin(10);
+					Coin(10);
+					AudioManager.instance.SfxPlay(AudioManager.Sfx.Coin);
 					break;
 			}
 

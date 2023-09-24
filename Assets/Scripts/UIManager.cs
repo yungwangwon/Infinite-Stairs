@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,11 +20,16 @@ public class UIManager : MonoBehaviour
 	public Text bestScore_Main;
 	public Text coin;
 
+	[Header("# Scroll UI")]
+	public GameObject scroll;
+	public GameObject[] btns;
+	
 	public void Dead()
 	{
 		deadUI.SetActive(true);
 		mainUI.SetActive(false);
 		ingameUI.SetActive(false);
+		AudioManager.instance.BgmPlay(false);
 
 	}
 
@@ -43,6 +49,10 @@ public class UIManager : MonoBehaviour
 		ingameUI.SetActive(true);
 		GameManager.instance.Init();
 		GameManager.instance.isLive = true;
+		AudioManager.instance.BgmPlay(true);
+
+
+
 	}
 
 	public void SetScoreText()
@@ -57,5 +67,36 @@ public class UIManager : MonoBehaviour
 		coin.text = GameManager.instance.money.ToString();
 	}
 
+	// 버튼 활성화, 비활성화
+	public void Btn(int num)
+	{
+
+		if(scroll.activeSelf)
+		{
+
+			if (btns[num].activeSelf)
+			{
+				btns[num].SetActive(false);	
+				scroll.SetActive(false);
+				return;
+			}
+
+			for (int i = 0; i < btns.Length; i++)
+			{
+				if (i == num)
+					btns[i].SetActive(true);
+				else
+					btns[i].SetActive(false);
+			}
+		}
+		else
+		{
+			scroll.SetActive(true);
+			btns[num].SetActive(true);
+		}
+
+		AudioManager.instance.SfxPlay(AudioManager.Sfx.Button);
+
+	}
 
 }

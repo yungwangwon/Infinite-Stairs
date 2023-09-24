@@ -8,21 +8,31 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 using UnityEngineInternal;
 
+
+// # 펫 이동하기위한 저장 구조체
+public struct SavePlayerPos
+{
+    public bool isLeft;
+    public Vector3 pos;
+}
+
 public class Player : MonoBehaviour
 {
     public bool dirLeft;
 
-    RaycastHit2D hit;
     Animator ani;
     SpriteRenderer sprite;
+    SavePlayerPos savePlayerPos;
     Vector3 initPos;
+    RaycastHit2D hit;
 
-    private void Awake()
+	private void Awake()
     {
         dirLeft = true;
         sprite = GetComponent<SpriteRenderer>();
 		ani = GetComponent<Animator>();
         initPos = transform.position;
+
 
 	}
 
@@ -47,6 +57,7 @@ public class Player : MonoBehaviour
 	public void Init()
 	{
         transform.position = initPos;
+        dirLeft = true;
         sprite.flipX = false;
         ani.Rebind();
     }
@@ -58,9 +69,12 @@ public class Player : MonoBehaviour
             return;
 
         ani.SetTrigger("Move");
+		Save();
 		transform.position += Vector3.up * 0.25f;
         transform.position += (dirLeft == true ? Vector3.left * 0.5f : Vector3.right * 0.5f);
-        GameManager.instance.backGround.Up();
+        GameManager.instance.pet.Move();
+		GameManager.instance.backGround.Up();
+        AudioManager.instance.SfxPlay(AudioManager.Sfx.Walk);
 
 		// 점수 증가
 		GameManager.instance.score++;
@@ -80,11 +94,19 @@ public class Player : MonoBehaviour
         Up();
     }
 
+    public void Save()
+    {
+        savePlayerPos.isLeft = dirLeft;
+        savePlayerPos.pos = transform.position;
+    }
+    public SavePlayerPos GetSave() { return savePlayerPos; }
+
     // 죽음
     public IEnumerator Dead()
     {
 		GameManager.instance.score--;
 		GameManager.instance.isLive = false;
+        GameManager.instance.pet.Dead();
 
         // 최고기록 갱신
         if (GameManager.instance.score > GameManager.instance.bestScore)
@@ -96,6 +118,8 @@ public class Player : MonoBehaviour
 		ani.SetTrigger("Die");
         yield return new WaitForSeconds(2.0f);
         GameManager.instance.uiManager.Dead();
+        AudioManager.instance.SfxPlay(AudioManager.Sfx.Dead);
+
 	}
 
 }
