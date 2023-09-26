@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AchiveManager : MonoBehaviour
 {
@@ -12,10 +13,14 @@ public class AchiveManager : MonoBehaviour
 
 	WaitForSecondsRealtime wait;
 
-	enum Achive
+	public enum Achive
 	{
-		UnlockPotato,
-		UnlockBean
+		Pet01,
+		Pet02,
+		Pet03,
+		Pet04,
+		Pet05,
+		Pet06,
 	}
 
 	Achive[] achives;
@@ -24,14 +29,17 @@ public class AchiveManager : MonoBehaviour
 	{
 		achives = (Achive[])Enum.GetValues(typeof(Achive));
 		wait = new WaitForSecondsRealtime(3.0f);
+			Init();
 	}
 
 	// 초기 설정
-	public void Init()
+	void Init()
 	{
+		PlayerPrefs.SetInt("MyData", 1);
+
 		foreach (Achive achive in achives)
 		{
-
+			PlayerPrefs.SetInt(achive.ToString(), 0);
 		}
 	}
 
@@ -67,11 +75,29 @@ public class AchiveManager : MonoBehaviour
 		// 해금 조건 판별
 		switch (achive)
 		{
-			case Achive.UnlockPotato:
-				isAchive = GameManager.instance.kill >= 10;
+			case Achive.Pet01:
+				if(GameManager.instance.score >= 0)
+					isAchive = true;
 				break;
-			case Achive.UnlockBean:
-				isAchive = GameManager.instance.gameTime == GameManager.instance.maxGameTime;
+			case Achive.Pet02:
+				if (GameManager.instance.score >= 50)
+					isAchive = true;
+				break;
+			case Achive.Pet03:
+				if (GameManager.instance.score >= 100)
+					isAchive = true;
+				break;
+			case Achive.Pet04:
+				if (GameManager.instance.score >= 150)
+					isAchive = true;
+				break;
+			case Achive.Pet05:
+				if (GameManager.instance.score >= 200)
+					isAchive = true;
+				break;
+			case Achive.Pet06:
+				if (GameManager.instance.score >= 250)
+					isAchive = true;
 				break;
 		}
 
@@ -80,11 +106,8 @@ public class AchiveManager : MonoBehaviour
 		{
 			PlayerPrefs.SetInt(achive.ToString(), 1);
 
-			for (int i = 0; i < uiNotice.transform.childCount; i++)
-			{
-				bool isActive = i == (int)achive;
-				uiNotice.transform.GetChild(i).gameObject.SetActive(isActive);
-			}
+			uiNotice.GetComponentsInChildren<Image>()[1].sprite = GameManager.instance.resourcesManager.petSprites[(int)achive];
+			GameManager.instance.resourcesManager.SetButton(achive);
 
 			StartCoroutine("NoticeRoutine");
 		}
@@ -93,7 +116,7 @@ public class AchiveManager : MonoBehaviour
 	IEnumerator NoticeRoutine()
 	{
 		uiNotice.SetActive(true);
-		AudioManager.instance.SfxPlay(AudioManager.Sfx.LevelUp);
+		AudioManager.instance.SfxPlay(AudioManager.Sfx.UnLock);
 
 		yield return wait;
 		uiNotice.SetActive(false);

@@ -29,6 +29,7 @@ public class AudioManager : MonoBehaviour
 		Dead,
 		Hp,
 		Walk,
+		UnLock,
 	}
 
 	private void Awake()

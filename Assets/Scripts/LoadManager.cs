@@ -7,7 +7,6 @@ public class SaveData
 {
     public int bestScore;
     public int coin;
-    public int[] achive;
 }
 
 public class LoadManager : MonoBehaviour
@@ -34,13 +33,10 @@ public class LoadManager : MonoBehaviour
 			{
 				GameManager.instance.bestScore = saveData.bestScore;
 				GameManager.instance.money = saveData.coin;
-				GameManager.instance.achive = saveData.achive;
 			}
-
 		}
 		else
 		{
-			GameManager.instance.achiveManager.Init();
 			Debug.Log("파일 존재x");
 		}
 	}

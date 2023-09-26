@@ -6,6 +6,9 @@ public class RespawnArea : MonoBehaviour
 {
 	private void Update()
 	{
+		if (!GameManager.instance.isLive)
+			return;
+
 		transform.position = GameManager.instance.player.transform.position;
 	}
 

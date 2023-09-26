@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
 
 	[Header("# Scroll UI")]
 	public GameObject scroll;
+	public GameObject scrollAchive;
 	public GameObject[] btns;
 	
 	public void Dead()
@@ -70,14 +72,17 @@ public class UIManager : MonoBehaviour
 	// 버튼 활성화, 비활성화
 	public void Btn(int num)
 	{
+		if (scrollAchive.activeSelf)
+			scrollAchive.SetActive(false);
 
-		if(scroll.activeSelf)
+		if (scroll.activeSelf)
 		{
 
 			if (btns[num].activeSelf)
 			{
 				btns[num].SetActive(false);	
 				scroll.SetActive(false);
+				AudioManager.instance.SfxPlay(AudioManager.Sfx.Button);
 				return;
 			}
 
@@ -92,11 +97,34 @@ public class UIManager : MonoBehaviour
 		else
 		{
 			scroll.SetActive(true);
-			btns[num].SetActive(true);
+			for (int i = 0; i < btns.Length; i++)
+			{
+				if (i == num)
+					btns[i].SetActive(true);
+				else
+					btns[i].SetActive(false);
+			}
 		}
 
 		AudioManager.instance.SfxPlay(AudioManager.Sfx.Button);
 
+	}
+
+	// 미션 버튼
+	public void BtnAchive()
+	{
+		if (scroll.activeSelf)
+			scroll.SetActive(false);
+
+		if (scrollAchive.activeSelf)
+		{
+			scrollAchive.SetActive(false);
+		}
+		else
+			scrollAchive.SetActive(true);
+
+
+		AudioManager.instance.SfxPlay(AudioManager.Sfx.Button);
 	}
 
 }

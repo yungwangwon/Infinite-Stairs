@@ -60,10 +60,12 @@ public class ResourcesManager : MonoBehaviour
 			Button btn = Instantiate(btnPrefab);
 			btn.transform.SetParent(petBox);
 			btn.GetComponent<Image>().sprite = petSprites[i];
+			btn.GetComponent<Image>().color = new Color(0, 0, 0);
 			btn.GetComponent<Resource>().type = Resource.Type.Pet;
 			btn.GetComponent<Resource>().id = i;
 			btn.GetComponent<Button>().onClick.AddListener
 				(() => SelectResource(btn.GetComponent<Resource>()));
+			btn.interactable = false;
 
 		}
 
@@ -104,6 +106,12 @@ public class ResourcesManager : MonoBehaviour
 
 		AudioManager.instance.SfxPlay(AudioManager.Sfx.Button);
 
+	}
+
+	public void SetButton(AchiveManager.Achive achive)
+	{
+		petBox.GetChild((int)achive).GetComponent<Image>().color = new Color(255, 255, 255);
+		petBox.GetChild((int)achive).GetComponent<Button>().interactable = true;
 	}
 
 
