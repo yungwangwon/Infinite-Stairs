@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,12 +16,20 @@ public class Stair : MonoBehaviour
 		stairX = 0.5f;
 		stairY = 0.25f;
 		initPos = transform.position;
-		Init();
+		//Init();
 
 	}
 
 	public void Init()
 	{
+		if(startPos != initPos)
+		{
+			for(int i =1;i<  transform.childCount;i++)
+			{
+				Destroy(transform.GetChild(i).gameObject);
+			}
+		}
+
 		startPos = initPos;
 		
 		// .. 초기 계단생성

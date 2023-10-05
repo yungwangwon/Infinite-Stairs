@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class PoolManager : MonoBehaviour
 {
@@ -33,7 +35,7 @@ public class PoolManager : MonoBehaviour
 				// 해당 오브젝트 반환
 				select = pool;
 				select.SetActive(true);
-				
+				break;
 			}
 		}
 
@@ -46,5 +48,17 @@ public class PoolManager : MonoBehaviour
 		}
 
 		return select;
+	}
+
+	// 초기화
+	public void Init()
+	{
+		for (int i = 0; i < poolPrefabs.Length; i++)
+		{
+			foreach (GameObject pool in pools[i])
+			{
+				pool.SetActive(false);
+			}
+		}
 	}
 }

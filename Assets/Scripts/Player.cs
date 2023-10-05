@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using TreeEditor;
 using UnityEngine;
 using UnityEngine.Jobs;
 using UnityEngine.SocialPlatforms.Impl;
@@ -25,6 +24,9 @@ public class Player : MonoBehaviour
     SavePlayerPos savePlayerPos;
     Vector3 initPos;
     RaycastHit2D hit;
+
+    public RectTransform upBtn;
+    public RectTransform turnBtn;
 
 	private void Awake()
     {
@@ -101,6 +103,39 @@ public class Player : MonoBehaviour
     }
     public SavePlayerPos GetSave() { return savePlayerPos; }
 
+    bool flag = true; // flag 변수
+    // 버튼 위치변경
+    public void SwitchBtn()
+    {
+        if (flag)
+        {
+            upBtn.anchorMin = new Vector2(1, 0);
+            upBtn.anchorMax = new Vector2(1, 0);
+            upBtn.pivot = new Vector2(1, 0);
+            upBtn.anchoredPosition = new Vector3(-10,10); 
+            turnBtn.anchorMin = new Vector2(0, 0);
+            turnBtn.anchorMax = new Vector2(0, 0);
+            turnBtn.pivot = new Vector2(0, 0);
+			turnBtn.anchoredPosition = new Vector3(10, 10);
+
+
+		}
+		else
+        {
+            upBtn.anchorMin = new Vector2(0, 0);
+            upBtn.anchorMax = new Vector2(0, 0);
+            upBtn.pivot = new Vector2(0, 0);
+			upBtn.anchoredPosition = new Vector3(10, 10);
+			turnBtn.anchorMin = new Vector2(1, 0);
+            turnBtn.anchorMax = new Vector2(1, 0);
+            turnBtn.pivot = new Vector2(1, 0);
+			turnBtn.anchoredPosition = new Vector3(-10, 10);
+
+		}
+		flag = !flag;
+    }
+
+
     // 죽음
     public IEnumerator Dead()
     {
@@ -113,12 +148,14 @@ public class Player : MonoBehaviour
             GameManager.instance.bestScore = GameManager.instance.score;
 
 		GameManager.instance.uiManager.SetScoreText();
+        GameManager.instance.loadManager.JsonSave(new SaveData(GameManager.instance.bestScore, GameManager.instance.money));
 
 		yield return 1;
 		ani.SetTrigger("Die");
         yield return new WaitForSeconds(2.0f);
         GameManager.instance.uiManager.Dead();
         AudioManager.instance.SfxPlay(AudioManager.Sfx.Dead);
+
 
 	}
 

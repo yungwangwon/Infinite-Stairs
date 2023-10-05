@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 	public GameObject scroll;
 	public GameObject scrollAchive;
 	public GameObject[] btns;
-	
+
 	public void Dead()
 	{
 		deadUI.SetActive(true);
@@ -46,13 +46,17 @@ public class UIManager : MonoBehaviour
 
 	public void Play()
 	{
+		if (!mainUI.activeSelf)
+			GameManager.instance.Init();
+
 		deadUI.SetActive(false);
 		mainUI.SetActive(false);
 		ingameUI.SetActive(true);
-		GameManager.instance.Init();
-		GameManager.instance.isLive = true;
-		AudioManager.instance.BgmPlay(true);
+		scrollAchive.SetActive(false);
+		scroll.SetActive(false);
 
+		AudioManager.instance.BgmPlay(true);
+		GameManager.instance.isLive = true;
 
 
 	}
